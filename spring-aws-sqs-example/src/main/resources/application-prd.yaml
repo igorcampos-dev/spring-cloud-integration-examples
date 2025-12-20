@@ -1,0 +1,16 @@
+server:
+  port: ${SERVER_PORT}
+
+spring:
+
+  application:
+    name: spring-aws-sqs-example-prd
+
+aws:
+  accessKey: ${AWS_ACCESS_KEY}
+  secretKey: ${AWS_SECRET_KEY}
+  region: ${AWS_REGION}
+  host: ${AWS_HOST}
+  sqs:
+    productQueueUrl: ${QUEUE_PRODUCT_URL}
+    productQueueName: ${QUEUE_PRODUCT_NAME}

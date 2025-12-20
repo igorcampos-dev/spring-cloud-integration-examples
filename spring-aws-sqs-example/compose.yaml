@@ -1,0 +1,33 @@
+services:
+
+  spring-aws-sqs-example:
+    container_name: spring-aws-sqs-example
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prd
+      SERVER_PORT: 8080
+      AWS_ACCESS_KEY: test
+      AWS_SECRET_KEY: test
+      AWS_REGION: us-east-1
+      AWS_HOST: http://localstack:4566
+      QUEUE_PRODUCT_URL: http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/sqs-example-queue
+      QUEUE_PRODUCT_NAME: sqs-example-queue
+
+  localstack:
+    container_name: localstack
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"
+    environment:
+      SERVICES: sqs
+      DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_DEFAULT_REGION: us-east-1
+      QUEUE_NAME: sqs-example-queue
+    volumes:
+      - ./docker:/etc/localstack/init/ready.d
+      - /var/run/docker.sock:/var/run/docker.sock

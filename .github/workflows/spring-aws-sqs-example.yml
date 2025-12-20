@@ -1,0 +1,72 @@
+name: spring-aws-sqs-example CI Build
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "spring-aws-sqs-example/**"
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+
+  integration-tests:
+    name: Run Unit & Integration Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: spring-aws-sqs-example
+    strategy:
+      matrix:
+        distribution: [ 'temurin' ]
+        java: [ '21' ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v5.1.0
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: ${{ matrix.distribution }}
+          cache: gradle
+
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x gradlew
+
+      - name: Build and analyze
+        run: ./gradlew clean build
+
+  health-check:
+    name: Health Check on Services
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Extract service names from docker compose
+        id: services
+        run: |
+          echo "services<<EOF" >> $GITHUB_OUTPUT
+          docker compose -f ./spring-aws-sqs-example/compose.yaml config --services >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Start containers with Compose Action
+        uses: hoverkraft-tech/compose-action@v2.4.2
+        with:
+          compose-file: './spring-aws-sqs-example/compose.yaml'
+          services: ${{ steps.services.outputs.services }}
+          up-flags: '--build'
+          down-flags: '--volumes'
+
+      - name: Wait for containers to initialize
+        run: sleep 10
+
+      - name: Check container health
+        run: |
+          ./.github/scripts/check-container-health.sh "${{ steps.services.outputs.services }}"
