@@ -1,3 +1,7 @@
+"spring-aws-sqs-example":
+  - changed-files:
+      - any-glob-to-any-file: 'spring-aws-sqs-example/**/*'
+      
 "dependency-upgrade":
   - changed-files:
       - any-glob-to-any-file: "**/build.gradle.kts"
