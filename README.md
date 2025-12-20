@@ -10,13 +10,15 @@ The focus is to show how Spring applications integrate with cloud-native service
 
 Below you will find a list of integration examples available in this repository.
 
+| Name                                              | Description                                                 |
+|---------------------------------------------------|-------------------------------------------------------------|
+| [Spring Boot + AWS SQS](./spring-aws-sqs-example) | Demonstrates a basic integration between Spring and AWS SQS |
 ---
 
 ## Stack
 
 - Java 21
 - Spring Framework / Spring Boot
-- Spring Cloud libraries (when required)
 
 ---
 
