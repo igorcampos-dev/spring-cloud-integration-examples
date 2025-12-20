@@ -1,0 +1,17 @@
+"dependency-upgrade":
+  - changed-files:
+      - any-glob-to-any-file: "**/build.gradle.kts"
+
+"github-actions":
+  - changed-files:
+      - any-glob-to-any-file: '.github/**/*'
+
+"renovate":
+  - changed-files:
+      - any-glob-to-any-file: 'renovate.json'
+
+"documentation":
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'README.md'
+          - 'LICENSE'

@@ -1,0 +1,25 @@
+# spring-cloud-integration-examples
+
+Practical examples of integrations between **Java**, **Spring**, and **cloud services**.
+
+The focus is to show how Spring applications integrate with cloud-native services in a **simple, isolated, and real-world-oriented** way.
+
+---
+
+## Projects
+
+Below you will find a list of integration examples available in this repository.
+
+---
+
+## Stack
+
+- Java 21
+- Spring Framework / Spring Boot
+- Spring Cloud libraries (when required)
+
+---
+
+## Goal
+
+To serve as a practical and objective reference for Java developers working with cloud integrations.
