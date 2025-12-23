@@ -1,6 +1,7 @@
 package com.example.aws.messaging.consumer;
 
 import com.example.aws.dto.SqsConsumerDto;
+import com.example.aws.exception.BusinessException;
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,9 @@ public class SqsConsumer {
             SqsConsumerDto dto = mapper.readValue(message, SqsConsumerDto.class);
             log.info("Processing message: message={}", dto.getMessage());
         } catch (Exception e) {
-            log.error("Error processing SQS message. rawMessage={}", message, e);
+            String errorMessage = "Error processing SQS message. rawMessage= " + message;
+            log.error(errorMessage, e);
+            throw new BusinessException(errorMessage, e);
         }
     }
 
