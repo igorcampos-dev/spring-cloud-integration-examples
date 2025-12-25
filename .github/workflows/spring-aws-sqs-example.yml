@@ -44,29 +44,22 @@ jobs:
     name: Health Check on Services
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository and submodules
+
+      - name: Checkout source code
         uses: actions/checkout@v6
         with:
           submodules: true
 
-      - name: Extract service names from docker compose
-        id: services
+      - name: Resolve docker compose container names
+        run: ./.github/scripts/extract-compose-containers.sh ./spring-aws-sqs-example/compose.yaml
+
+      - name: Start docker compose stack
+        run: docker compose -f ./spring-aws-sqs-example/compose.yaml up -d --build
+
+      - name: Verify container health
+        run: ./.github/scripts/check-container-health.sh "${{ steps.services.outputs.services }}"
+
+      - name: Cleanup Docker
+        if: always()
         run: |
-          echo "services<<EOF" >> $GITHUB_OUTPUT
-          docker compose -f ./spring-aws-sqs-example/compose.yaml config --services >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Start containers with Compose Action
-        uses: hoverkraft-tech/compose-action@v2.4.2
-        with:
-          compose-file: './spring-aws-sqs-example/compose.yaml'
-          services: ${{ steps.services.outputs.services }}
-          up-flags: '--build'
-          down-flags: '--volumes'
-
-      - name: Wait for containers to initialize
-        run: sleep 10
-
-      - name: Check container health
-        run: |
-          ./.github/scripts/check-container-health.sh "${{ steps.services.outputs.services }}"
+          docker compose -f ./spring-aws-sqs-example/compose.yaml down -v || true
