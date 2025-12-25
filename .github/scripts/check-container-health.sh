@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+sleep 10
+
 echo "Checking the health of the containers..."
 
 SERVICES="$1"
