@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21.0.9_10-jdk-jammy AS build
+FROM eclipse-temurin:21.0.10_7-jdk-jammy AS build
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ COPY src/ src/
 RUN --mount=type=cache,target=/root/.gradle \
     ./gradlew bootJar -x test --no-daemon
 
-FROM eclipse-temurin:21.0.9_10-jre-jammy
+FROM eclipse-temurin:21.0.10_7-jre-jammy
 
 WORKDIR /app
 
