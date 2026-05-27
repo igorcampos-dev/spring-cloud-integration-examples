@@ -32,7 +32,7 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    implementation("org.instancio:instancio-core:5.5.1")
+    implementation("org.instancio:instancio-core:5.6.0")
 }
 
 tasks.withType<Test> {
